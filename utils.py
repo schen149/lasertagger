@@ -69,7 +69,10 @@ def _yield_wikisplit_examples(
   # target on the second column.
   with tf.io.gfile.GFile(input_file) as f:
     for line in f:
-      source, target = line.rstrip('\n').split('\t')
+      tuple = line.rstrip('\n').split('\t')
+      if len(tuple) != 2:
+        continue
+      source, target = tuple[0], tuple[1]
       yield [source], target
 
 
