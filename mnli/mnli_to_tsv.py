@@ -3,15 +3,12 @@ import os
 import pandas as pd
 
 
-def convert_mnli_to_sent_pair(mnli_dir, output_dir):
+def convert_mnli_to_sent_pair(mnli_path, out_path):
     """
     Convert the entailment
     :return:
     """
-    mnli_train_path = os.path.join(mnli_dir, "train.tsv")
-    out_path = os.path.join(output_dir, "mnli_train.tsv")
-
-    df = pd.read_csv(mnli_train_path, sep='\t', error_bad_lines=False)
+    df = pd.read_csv(mnli_path, sep='\t', error_bad_lines=False)
     df.dropna(subset=["sentence1", "sentence2", "gold_label"], inplace=True)
     entail_df = df[df.gold_label == "entailment"]
 
@@ -32,4 +29,14 @@ if __name__ == '__main__':
     mnli_dir = sys.argv[1]
     output_dir = sys.argv[2]
 
-    convert_mnli_to_sent_pair(mnli_dir, output_dir)
+    mnli_train_path = os.path.join(mnli_dir, "train.tsv")
+    train_out_path = os.path.join(output_dir, "mnli_train.tsv")
+    convert_mnli_to_sent_pair(mnli_train_path, train_out_path)
+
+    mnli_dev_matched_path = os.path.join(mnli_dir, "dev_matched.tsv")
+    dev_matched_out_path = os.path.join(output_dir, "mnli_dev_matched.tsv")
+    convert_mnli_to_sent_pair(mnli_dev_matched_path, dev_matched_out_path)
+
+    mnli_dev_mismatched_path = os.path.join(mnli_dir, "dev_mismatched.tsv")
+    dev_mismatched_path = os.path.join(output_dir, "mnli_dev_mismatched.tsv")
+    convert_mnli_to_sent_pair(mnli_dev_mismatched_path, dev_mismatched_path)
